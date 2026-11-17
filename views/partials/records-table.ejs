@@ -1,0 +1,27 @@
+<% const date = value => value ? new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'; %>
+<% if (!records.length) { %>
+  <div class="empty"><h3>No borrowing records</h3><p>Requests and loans will appear here.</p></div>
+<% } else { %>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Book</th><% if (manager) { %><th>Member</th><% } %><th>Requested</th><th>Due date</th><th>Returned</th><th>Status</th><% if (typeof actions === 'undefined' || actions) { %><th>Actions</th><% } %></tr></thead>
+    <tbody>
+      <% records.forEach(record => { const overdue = record.status === 'borrowed' && record.dueDate && new Date(record.dueDate) < new Date(); %>
+        <tr>
+          <td><strong><%= record.book ? record.book.title : 'Unavailable book' %></strong><small><%= record.book ? record.book.author : '' %></small></td>
+          <% if (manager) { %><td><%= record.user ? record.user.name : 'Unknown member' %></td><% } %>
+          <td><%= date(record.requestDate) %></td><td><%= date(record.dueDate) %></td><td><%= date(record.returnDate) %></td>
+          <td><span class="badge <%= overdue ? 'overdue' : record.status %>"><%= overdue ? 'Overdue' : record.status.charAt(0).toUpperCase() + record.status.slice(1) %></span></td>
+          <% if (typeof actions === 'undefined' || actions) { %><td><div class="actions">
+            <% if (manager && record.status === 'pending') { %>
+              <% ['approve', 'reject'].forEach(action => { %><form method="post" action="/manager/borrow-records/<%= record._id %>/<%= action %>"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button" type="submit"><%= action === 'approve' ? 'Approve request' : 'Reject request' %></button></form><% }) %>
+            <% } else if (manager && record.status === 'borrowed') { %>
+              <form method="post" action="/manager/borrow-records/<%= record._id %>/return"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button" type="submit">Record return</button></form>
+            <% } else if (!manager && record.status === 'pending') { %>
+              <form method="post" action="/user/borrow-records/<%= record._id %>/cancel"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button" type="submit">Cancel request</button></form>
+            <% } else { %>—<% } %>
+          </div></td><% } %>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table></div>
+<% } %>

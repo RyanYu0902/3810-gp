@@ -1,0 +1,3 @@
+<%- include('partials/header', { title: 'Members' }) %>
+<div class="page-heading"><div><span class="eyebrow">Library accounts</span><h1>Library members</h1><p>Member accounts registered with this library.</p></div></div><section class="panel"><% if (!users.length) { %><div class="empty"><h3>No member accounts</h3><p>Registered members will appear here.</p></div><% } else { %><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead><tbody><% users.forEach(member => { %><tr><td><strong><%= member.name %></strong></td><td><%= member.email %></td><td><%= new Date(member.createdAt).toLocaleDateString('en-GB') %></td></tr><% }) %></tbody></table></div><% } %></section>
+<%- include('partials/footer') %>
