@@ -30,7 +30,6 @@ app.use((req, res, next) => {
   delete req.session.notice;
   next();
 });
-app.use(require('./middleware/csrf'));
 app.get('/', (req, res) => res.redirect(req.session.user ? `/${req.session.user.role}/dashboard` : '/login'));
 app.use('/', require('./routes/auth'));
 app.use('/user', require('./routes/user'));

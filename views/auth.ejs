@@ -3,12 +3,14 @@
   <section class="auth-story"><a class="brand light" href="/" aria-label="The Reading Room home"><span class="brand-mark" aria-hidden="true">R</span><span><span class="brand-title">The Reading Room</span><small>Library catalogue</small></span></a><div><span class="eyebrow">Library services</span><h1>Library access for readers and staff</h1><p>Search the catalogue, request books and keep track of borrowing in one place.</p></div><span class="auth-note">For library members and managers</span></section>
   <section class="auth-panel"><div class="auth-box"><span class="eyebrow">The Reading Room</span><h2><%= mode === 'login' ? 'Sign in to your account' : 'Create a member account' %></h2><p class="muted"><%= mode === 'login' ? 'Use your library account to continue.' : 'Register to search the catalogue and request books.' %></p>
     <form method="post" action="/<%= mode %>" class="form-stack">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <% if (mode === 'register') { %><label>Full name<input name="name" autocomplete="name" maxlength="100" required></label><% } %>
       <label>Email address<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
       <label>Password<input name="password" type="password" autocomplete="<%= mode === 'login' ? 'current-password' : 'new-password' %>" required minlength="8" placeholder="At least 8 characters"></label>
       <button class="button primary full" type="submit"><%= mode === 'login' ? 'Sign in' : 'Create account' %><span aria-hidden="true">→</span></button>
     </form>
+    <% if (typeof googleAuthEnabled !== 'undefined' && googleAuthEnabled) { %>
+      <a class="button secondary google-sign-in" href="/auth/google">Continue with Google</a>
+    <% } %>
     <p class="auth-switch"><%= mode === 'login' ? 'New to the library?' : 'Already have an account?' %> <a href="/<%= mode === 'login' ? 'register' : 'login' %>"><%= mode === 'login' ? 'Create an account' : 'Sign in' %></a></p>
   </div></section>
 </div>

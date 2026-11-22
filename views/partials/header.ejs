@@ -37,7 +37,7 @@
       </nav>
       <div class="sidebar-bottom">
         <div class="profile"><span class="avatar" aria-hidden="true"><%= user.name.charAt(0).toUpperCase() %></span><span><strong><%= user.name %></strong><small><%= user.role === 'manager' ? 'Library manager' : 'Library member' %></small></span></div>
-        <form action="/logout" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="logout" type="submit">Sign out →</button></form>
+        <form action="/logout" method="post"><button class="logout" type="submit">Sign out →</button></form>
       </div>
     </aside>
   <% } %>

@@ -6,7 +6,7 @@
 <div class="book-grid"><% books.forEach((book, index) => { %>
   <% if (manager) { %><article class="book-card"><% } else { %><a class="book-card" href="/user/books/<%= book._id %>" aria-label="View details for <%= book.title %>"><% } %>
     <div class="book-cover cover-<%= index % 5 %>"><span><%= book.category %></span><h3><%= book.title %></h3><small><%= book.author %></small><div class="cover-decoration" aria-hidden="true"></div></div>
-    <div class="book-info"><div class="book-meta"><span class="availability"><%= book.availableCopies %> available</span></div><div class="card-bottom"><% if (manager) { %><a class="link" href="/manager/books/<%= book._id %>/edit">Edit details <span aria-hidden="true">→</span></a><form method="post" action="/manager/books/<%= book._id %>/delete" onsubmit="return confirm('Delete this book?')"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button danger" type="submit">Delete</button></form><% } else { %><span class="link">View book details <span aria-hidden="true">→</span></span><% } %></div></div>
+    <div class="book-info"><div class="book-meta"><span class="availability"><%= book.availableCopies %> available</span></div><div class="card-bottom"><% if (manager) { %><a class="link" href="/manager/books/<%= book._id %>/edit">Edit details <span aria-hidden="true">→</span></a><form method="post" action="/manager/books/<%= book._id %>/delete" onsubmit="return confirm('Delete this book?')"><button class="text-button danger" type="submit">Delete</button></form><% } else { %><span class="link">View book details <span aria-hidden="true">→</span></span><% } %></div></div>
   <% if (manager) { %></article><% } else { %></a><% } %>
 <% }) %></div><% } %>
 <%- include('partials/footer') %>

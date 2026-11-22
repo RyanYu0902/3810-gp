@@ -13,11 +13,11 @@
           <td><span class="badge <%= overdue ? 'overdue' : record.status %>"><%= overdue ? 'Overdue' : record.status.charAt(0).toUpperCase() + record.status.slice(1) %></span></td>
           <% if (typeof actions === 'undefined' || actions) { %><td><div class="actions">
             <% if (manager && record.status === 'pending') { %>
-              <% ['approve', 'reject'].forEach(action => { %><form method="post" action="/manager/borrow-records/<%= record._id %>/<%= action %>"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button" type="submit"><%= action === 'approve' ? 'Approve request' : 'Reject request' %></button></form><% }) %>
+              <% ['approve', 'reject'].forEach(action => { %><form method="post" action="/manager/borrow-records/<%= record._id %>/<%= action %>"><button class="text-button" type="submit"><%= action === 'approve' ? 'Approve request' : 'Reject request' %></button></form><% }) %>
             <% } else if (manager && record.status === 'borrowed') { %>
-              <form method="post" action="/manager/borrow-records/<%= record._id %>/return"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button" type="submit">Record return</button></form>
+              <form method="post" action="/manager/borrow-records/<%= record._id %>/return"><button class="text-button" type="submit">Record return</button></form>
             <% } else if (!manager && record.status === 'pending') { %>
-              <form method="post" action="/user/borrow-records/<%= record._id %>/cancel"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-button" type="submit">Cancel request</button></form>
+              <form method="post" action="/user/borrow-records/<%= record._id %>/cancel"><button class="text-button" type="submit">Cancel request</button></form>
             <% } else { %>—<% } %>
           </div></td><% } %>
         </tr>

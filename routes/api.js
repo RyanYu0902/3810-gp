@@ -7,7 +7,6 @@ const { requireLogin, requireRole } = require('../middleware/auth');
 const router = express.Router();
 const asyncRoute = handler => (req, res, next) => Promise.resolve(handler(req, res, next)).catch(next);
 
-router.get('/csrf', (req, res) => res.json({ csrfToken: res.locals.csrfToken }));
 router.use(requireLogin);
 router.get('/books', asyncRoute(async (req, res) => res.json(await Book.find().sort({ title: 1 }))));
 router.get('/books/:id', asyncRoute(async (req, res) => {
