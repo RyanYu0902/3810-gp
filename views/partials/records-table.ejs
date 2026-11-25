@@ -1,23 +1,34 @@
 <% const date = value => value ? new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'; %>
 <% if (!records.length) { %>
-  <div class="empty"><h3>No borrowing records</h3><p>Requests and loans will appear here.</p></div>
+  <div class="empty"><h3>No circulation entries</h3><p>Hold requests, active loans and returns will appear in this ledger.</p></div>
 <% } else { %>
   <div class="table-wrap"><table>
-    <thead><tr><th>Book</th><% if (manager) { %><th>Member</th><% } %><th>Requested</th><th>Due date</th><th>Returned</th><th>Status</th><% if (typeof actions === 'undefined' || actions) { %><th>Actions</th><% } %></tr></thead>
+    <thead><tr><th>Title &amp; call info</th><% if (manager) { %><th>Cardholder</th><% } %><th>Requested</th><th>Due date</th><th>Returned</th><th>Status</th><% if (typeof actions === 'undefined' || actions) { %><th>Desk actions</th><% } %></tr></thead>
     <tbody>
-      <% records.forEach(record => { const overdue = record.status === 'borrowed' && record.dueDate && new Date(record.dueDate) < new Date(); %>
+      <% records.forEach(record => {
+        const overdue = record.status === 'borrowed' && record.dueDate && new Date(record.dueDate) < new Date();
+        const rawStatus = record.status || 'pending';
+        const statusClass = overdue ? 'overdue' : rawStatus;
+        const statusLabel = overdue ? 'Overdue' : rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1);
+      %>
         <tr>
-          <td><strong><%= record.book ? record.book.title : 'Unavailable book' %></strong><small><%= record.book ? record.book.author : '' %></small></td>
-          <% if (manager) { %><td><%= record.user ? record.user.name : 'Unknown member' %></td><% } %>
-          <td><%= date(record.requestDate) %></td><td><%= date(record.dueDate) %></td><td><%= date(record.returnDate) %></td>
-          <td><span class="badge <%= overdue ? 'overdue' : record.status %>"><%= overdue ? 'Overdue' : record.status.charAt(0).toUpperCase() + record.status.slice(1) %></span></td>
+          <td>
+            <strong><%= record.book ? record.book.title : 'Unavailable volume' %></strong>
+            <small><%= record.book ? record.book.author : '' %></small>
+            <% if (record.book && record.book.shelfLocation) { %><span class="call-tag">Shelf <%= record.book.shelfLocation %></span><% } %>
+          </td>
+          <% if (manager) { %><td><%= record.user ? record.user.name : 'Unknown cardholder' %></td><% } %>
+          <td><%= date(record.requestDate) %></td>
+          <td><%= date(record.dueDate) %></td>
+          <td><%= date(record.returnDate) %></td>
+          <td><span class="badge <%= statusClass %>"><%= statusLabel %></span></td>
           <% if (typeof actions === 'undefined' || actions) { %><td><div class="actions">
             <% if (manager && record.status === 'pending') { %>
-              <% ['approve', 'reject'].forEach(action => { %><form method="post" action="/manager/borrow-records/<%= record._id %>/<%= action %>"><button class="text-button" type="submit"><%= action === 'approve' ? 'Approve request' : 'Reject request' %></button></form><% }) %>
+              <% ['approve', 'reject'].forEach(action => { %><form method="post" action="/manager/borrow-records/<%= record._id %>/<%= action %>"><button class="text-button" type="submit"><%= action === 'approve' ? 'Approve loan' : 'Decline request' %></button></form><% }) %>
             <% } else if (manager && record.status === 'borrowed') { %>
-              <form method="post" action="/manager/borrow-records/<%= record._id %>/return"><button class="text-button" type="submit">Record return</button></form>
+              <form method="post" action="/manager/borrow-records/<%= record._id %>/return"><button class="text-button" type="submit">Mark returned</button></form>
             <% } else if (!manager && record.status === 'pending') { %>
-              <form method="post" action="/user/borrow-records/<%= record._id %>/cancel"><button class="text-button" type="submit">Cancel request</button></form>
+              <form method="post" action="/user/borrow-records/<%= record._id %>/cancel"><button class="text-button" type="submit">Cancel hold</button></form>
             <% } else { %>—<% } %>
           </div></td><% } %>
         </tr>

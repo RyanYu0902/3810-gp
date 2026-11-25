@@ -1,3 +1,8 @@
-<%- include('partials/header', { title: 'Something went wrong' }) %>
-<section class="error-page"><span class="eyebrow">Library service</span><h1>This page is unavailable</h1><p><%= message %></p><a class="button primary" href="/">Return to the library <span aria-hidden="true">→</span></a></section>
+<%- include('partials/header', { title: 'Reading room notice' }) %>
+<section class="error-page">
+  <span class="eyebrow">Circulation &amp; catalog notice</span>
+  <h1>This page is unavailable</h1>
+  <p><%= typeof message !== 'undefined' && message ? message : 'The requested page or shelf record could not be loaded.' %></p>
+  <a class="button primary" href="/">Return to the reading room <span aria-hidden="true">→</span></a>
+</section>
 <%- include('partials/footer') %>

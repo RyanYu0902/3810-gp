@@ -1,5 +1,35 @@
 <%- include('partials/header', { title: 'Overview' }) %>
-<div class="page-heading"><div><span class="eyebrow">Library workspace</span><h1>Library overview</h1><p>Welcome back, <%= user.name.split(' ')[0] %>. Here is the latest activity.</p></div><a class="button primary" href="<%= user.role === 'manager' ? '/manager/books/add' : '/user/books' %>"><%= user.role === 'manager' ? 'Add a book' : 'Browse the catalogue' %><span aria-hidden="true">→</span></a></div>
-<div class="stats"><% stats.forEach(([label, value], index) => { %><div class="stat-card"><span class="stat-icon" aria-hidden="true"><%= String(index + 1).padStart(2, '0') %></span><span class="stat-label"><%= label %></span><strong><%= value %></strong></div><% }) %></div>
-<section class="panel"><div class="section-heading"><div><span class="eyebrow">Circulation</span><h2>Recent borrowing</h2><p>Requests and loans recorded in the library.</p></div><a class="link" href="<%= user.role === 'manager' ? '/manager/borrow-records' : '/user/my-borrowings' %>"><%= user.role === 'manager' ? 'View borrowing records' : 'View my borrowing' %><span aria-hidden="true"> →</span></a></div><%- include('partials/records-table', { records, manager: user.role === 'manager', actions: false }) %></section>
+<% const firstName = user && user.name && user.name.trim() ? user.name.trim().split(/\s+/)[0] : 'Reader'; %>
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">Reading room index</span>
+    <h1>Library overview</h1>
+    <p>Welcome back, <%= firstName %>. Today’s collection and circulation summary.</p>
+  </div>
+  <a class="button primary" href="<%= user.role === 'manager' ? '/manager/books/add' : '/user/books' %>">
+    <%= user.role === 'manager' ? 'Catalog a new book' : 'Browse the stacks' %><span aria-hidden="true">→</span>
+  </a>
+</div>
+<div class="stats">
+  <% stats.forEach(([label, value], index) => { %>
+    <div class="stat-card">
+      <span class="stat-icon" aria-hidden="true"><%= String(index + 1).padStart(2, '0') %></span>
+      <span class="stat-label"><%= label %></span>
+      <strong><%= value %></strong>
+    </div>
+  <% }) %>
+</div>
+<section class="panel">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Circulation ledger</span>
+      <h2>Recent borrowing activity</h2>
+      <p>Recent hold requests, active loans and returned volumes.</p>
+    </div>
+    <a class="link" href="<%= user.role === 'manager' ? '/manager/borrow-records' : '/user/my-borrowings' %>">
+      <%= user.role === 'manager' ? 'Full circulation ledger' : 'View all my loans' %><span aria-hidden="true"> →</span>
+    </a>
+  </div>
+  <%- include('partials/records-table', { records, manager: user.role === 'manager', actions: false }) %>
+</section>
 <%- include('partials/footer') %>

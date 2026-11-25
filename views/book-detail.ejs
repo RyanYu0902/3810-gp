@@ -1,4 +1,32 @@
 <%- include('partials/header', { title: book.title }) %>
 <a class="back-link" href="/user/books"><span aria-hidden="true">←</span> Back to catalogue</a>
-<div class="detail-layout"><div class="book-cover detail-cover cover-1"><span><%= book.category %></span><strong><%= book.title %></strong><small><%= book.author %></small><div class="cover-decoration" aria-hidden="true"></div></div><div class="detail-content"><span class="eyebrow"><%= book.category %> · <%= book.type %></span><h1><%= book.title %></h1><p class="detail-author">by <%= book.author %></p><span class="badge <%= book.availableCopies ? 'returned' : 'overdue' %>"><%= book.availableCopies %> of <%= book.totalCopies %> copies available</span><h2>Book description</h2><p class="description"><%= book.description || 'No description available yet.' %></p><div class="detail-meta"><div><span>ISBN</span><strong><%= book.isbn %></strong></div><div><span>Shelf location</span><strong><%= book.shelfLocation || 'Not specified' %></strong></div></div><% if (book.type === 'Physical Book' && book.availableCopies > 0) { %><form method="post" action="/user/books/<%= book._id %>/request"><button class="button primary" type="submit">Request to borrow <span aria-hidden="true">→</span></button></form><p class="muted small">A library manager reviews requests before a book is issued.</p><% } else { %><p class="muted">This resource is not currently available to borrow.</p><% } %></div></div>
+<div class="detail-layout">
+  <div class="book-cover detail-cover cover-1">
+    <span><%= book.category %></span>
+    <strong><%= book.title %></strong>
+    <small><%= book.author %></small>
+    <div class="cover-decoration" aria-hidden="true"></div>
+  </div>
+  <div class="detail-content">
+    <span class="eyebrow"><%= book.category %> · <%= book.type %></span>
+    <h1><%= book.title %></h1>
+    <p class="detail-author">by <%= book.author %></p>
+    <span class="badge <%= book.availableCopies ? 'returned' : 'overdue' %>"><%= book.availableCopies %> of <%= book.totalCopies %> copies on shelf</span>
+    <h2>Catalog notes &amp; synopsis</h2>
+    <p class="description"><%= book.description || 'No catalog notes or synopsis recorded for this volume yet.' %></p>
+    <div class="detail-meta">
+      <div><span>ISBN</span><strong><%= book.isbn %></strong></div>
+      <div><span>Shelf call location</span><strong><%= book.shelfLocation || 'Reference desk' %></strong></div>
+      <div><span>Format</span><strong><%= book.type %></strong></div>
+    </div>
+    <% if (book.type === 'Physical Book' && book.availableCopies > 0) { %>
+      <form method="post" action="/user/books/<%= book._id %>/request">
+        <button class="button primary" type="submit">Place borrowing request <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="muted small">Requests are reviewed at the circulation desk before loan dispatch.</p>
+    <% } else { %>
+      <p class="muted">This volume is not currently available for checkout.</p>
+    <% } %>
+  </div>
+</div>
 <%- include('partials/footer') %>
