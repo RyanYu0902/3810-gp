@@ -5,8 +5,7 @@
   "description": "A library catalogue and circulation system",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js",
-    "setup-manager": "node scripts/setup-manager.js"
+    "dev": "node --watch server.js"
   },
   "engines": {
     "node": ">=20"
