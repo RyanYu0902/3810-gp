@@ -25,15 +25,16 @@
       </a>
       <div class="nav-label">Reading room desk</div>
       <nav aria-label="Main navigation">
-        <a href="/<%= user.role %>/dashboard" <% if (activePath === '/' + user.role + '/dashboard') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">01</span><span>Overview</span></a>
         <% if (user.role === 'manager') { %>
+          <a href="/manager/dashboard" <% if (activePath === '/manager/dashboard') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">01</span><span>Overview</span></a>
           <a href="/manager/books" <% if (activePath.startsWith('/manager/books')) { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">02</span><span>Book catalogue</span></a>
           <a href="/manager/borrow-requests" <% if (activePath === '/manager/borrow-requests') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">03</span><span>Loan requests</span></a>
           <a href="/manager/borrow-records" <% if (activePath === '/manager/borrow-records') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">04</span><span>Circulation ledger</span></a>
           <a href="/manager/users" <% if (activePath === '/manager/users') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">05</span><span>Library members</span></a>
         <% } else { %>
+          <a href="/user/my-borrowings" <% if (activePath === '/user/my-borrowings' || activePath === '/user/history') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">01</span><span>My loans</span></a>
           <a href="/user/books" <% if (activePath.startsWith('/user/books')) { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">02</span><span>Book catalogue</span></a>
-          <a href="/user/my-borrowings" <% if (activePath === '/user/my-borrowings' || activePath === '/user/history') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">03</span><span>My loans</span></a>
+          <a href="/user/account" <% if (activePath === '/user/account') { %>aria-current="page"<% } %>><span class="nav-mark" aria-hidden="true">03</span><span>My account</span></a>
         <% } %>
       </nav>
       <div class="sidebar-bottom">

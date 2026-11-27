@@ -41,6 +41,10 @@ The Google button appears once all three settings are present. New Google accoun
 - Members see only their own records and may cancel only their own pending requests. Managers can see all records. Records are retained, so books with borrowing history cannot be deleted. Total copies cannot be reduced below the number currently on loan.
 - E-books can be catalogued, but digital lending is not implemented.
 
+## Member account
+
+Members can update their name and change their local password from My account. Password changes require the current password and invalidate other sessions. Google-only members manage their password through Google. Members using email and password can delete their account after cancelling pending requests and returning all borrowed books; completed borrowing records are retained without account details. Accounts using Google sign-in cannot be deleted through the application.
+
 ## JSON API
 
 All book and borrowing endpoints require a logged-in session; book changes and approval/return actions require the manager role.

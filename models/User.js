@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, trim: true, lowercase: true, unique: true, maxlength: 254 },
   password: { type: String, required() { return !this.googleId; }, select: false },
   googleId: { type: String, unique: true, sparse: true },
+  sessionVersion: { type: Number, default: 0 },
+  requestVersion: { type: Number, default: 0 },
   role: { type: String, enum: ['user', 'manager'], default: 'user', required: true }
 }, { timestamps: true });
 

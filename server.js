@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   delete req.session.notice;
   next();
 });
-app.get('/', (req, res) => res.redirect(req.session.user ? `/${req.session.user.role}/dashboard` : '/login'));
+app.get('/', (req, res) => res.redirect(req.session.user ? (req.session.user.role === 'manager' ? '/manager/dashboard' : '/user/my-borrowings') : '/login'));
 app.use('/', require('./routes/auth'));
 app.use('/user', require('./routes/user'));
 app.use('/manager', require('./routes/manager'));

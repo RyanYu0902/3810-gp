@@ -99,10 +99,10 @@ router.post('/login', asyncRoute(async (req, res) => {
 function signIn(req, res, user) {
   req.session.regenerate(error => {
     if (error) return nextSessionError(error, res);
-    req.session.user = { id: String(user._id), name: user.name, role: user.role };
+    req.session.user = { id: String(user._id), name: user.name, role: user.role, sessionVersion: user.sessionVersion || 0 };
     req.session.save(saveError => {
       if (saveError) return nextSessionError(saveError, res);
-      res.redirect(user.role === 'manager' ? '/manager/dashboard' : '/user/dashboard');
+      res.redirect(user.role === 'manager' ? '/manager/dashboard' : '/user/my-borrowings');
     });
   });
 }

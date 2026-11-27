@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Book = require('../models/Book');
 const BorrowRecord = require('../models/BorrowRecord');
+const User = require('../models/User');
 
 function fail(message, status = 400) {
   const error = new Error(message);
@@ -60,6 +61,8 @@ async function deleteBook(id) {
 
 async function requestBook(userId, bookId) {
   return transaction(async session => {
+    const user = await User.findOneAndUpdate({ _id: userId, role: 'user' }, { $inc: { requestVersion: 1 } }, { session, new: true });
+    if (!user) fail('Account not found.', 404);
     const book = await Book.findOneAndUpdate(
       { _id: bookId, type: 'Physical Book', availableCopies: { $gt: 0 } },
       { $inc: { requestVersion: 1 } }, { session, new: true }

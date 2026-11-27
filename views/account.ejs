@@ -1,0 +1,43 @@
+<%- include('partials/header', { title: 'My account' }) %>
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">Your library card</span>
+    <h1>My account</h1>
+    <p>Manage your account details and sign-in information.</p>
+  </div>
+</div>
+<section class="panel form-panel">
+  <div class="section-heading"><div><h2>Personal details</h2><p>Email address: <%= account.email %></p></div></div>
+  <form class="form-stack" method="post" action="/user/account/name">
+    <label>Full name<input name="name" autocomplete="name" maxlength="100" value="<%= account.name %>" required></label>
+    <div><button class="button primary" type="submit">Save name <span aria-hidden="true">→</span></button></div>
+  </form>
+</section>
+<section class="panel form-panel">
+  <div class="section-heading"><div><h2>Password</h2><p>Change your account password.</p></div></div>
+  <% if (hasPassword) { %>
+    <form class="form-stack" method="post" action="/user/account/password">
+      <label>Current password<input name="currentPassword" type="password" autocomplete="current-password" required></label>
+      <label>New password<input name="newPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+      <label>Confirm new password<input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+      <p class="muted small">At least 8 characters and at most 72 bytes. Other sessions will need to sign in again.</p>
+      <div><button class="button primary" type="submit">Change password <span aria-hidden="true">→</span></button></div>
+    </form>
+  <% } else { %>
+    <p class="muted">This account uses Google sign-in. Change your Google password in your Google account.</p>
+  <% } %>
+</section>
+<section class="panel form-panel">
+  <div class="section-heading"><div><h2>Delete account</h2></div></div>
+  <% if (account.googleId) { %>
+    <p class="muted">Accounts using Google sign-in cannot be deleted here.</p>
+  <% } else { %>
+    <p class="muted">This permanently deletes your account. Completed borrowing history remains without your account details. First cancel pending requests and return all borrowed books. This action cannot be undone.</p>
+    <form class="form-stack" method="post" action="/user/account/delete">
+      <% if (hasPassword) { %><label>Current password<input name="password" type="password" autocomplete="current-password" required></label><% } %>
+      <label>Type DELETE to confirm<input name="confirmation" autocomplete="off" pattern="DELETE" required></label>
+      <div><button class="button secondary" type="submit">Delete my account</button></div>
+    </form>
+  <% } %>
+</section>
+<%- include('partials/footer') %>
